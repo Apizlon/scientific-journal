@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body class="page with-bg">
+    <div class="container">
+      <header class="site-header">
+        <h1>Регистрация</h1>
+        <nav class="nav">
+          <a href="/index.html">Главная</a>
+          <a href="/login.html">Вход</a>
+        </nav>
+      </header>
+
+      <main class="card">
+        <form method="post" action="/cgi-bin/register.pl">
+          <label>
+            Логин
+            <input type="text" name="login" required />
+          </label>
+          <label>
+            Пароль
+            <input type="password" name="password" required />
+          </label>
+          <button type="submit">Зарегистрироваться</button>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>
+

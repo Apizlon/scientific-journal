@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Научный журнал</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body class="page with-bg">
+    <a id="top"></a>
+
+    <div class="container">
+      <header class="site-header">
+        <h1>Сайт научного журнала</h1>
+        <nav class="nav">
+          <a href="/index.html">Главная</a>
+          <a href="/about.html">О журнале</a>
+          <a href="/issues.html">Выпуски</a>
+          <a href="/login.html">Вход</a>
+          <a href="/register.html">Регистрация</a>
+        </nav>
+      </header>
+
+      <main class="card">
+        <p>
+          Демонстрационный сайт: архив выпусков, статьи и тезисы, покупка отдельных статей, корзина и
+          заказы. Часть страниц генерируется CGI на Perl.
+        </p>
+
+        <div class="grid">
+          <a class="tile" href="/issues.html">
+            <img src="/assets/images/journal.png" alt="Журнал" />
+            <div>
+              <h2>Архив выпусков</h2>
+              <p>Список выпусков и статей.</p>
+            </div>
+          </a>
+
+          <a class="tile" href="/cgi-bin/issue.pl">
+            <img src="/assets/images/list.png" alt="Список" />
+            <div>
+              <h2>Выпуски (CGI)</h2>
+              <p>Динамический вывод из SQLite.</p>
+            </div>
+          </a>
+        </div>
+
+        <p class="links">
+          <a href="#bottom">В конец</a>
+        </p>
+      </main>
+
+      <footer class="footer">
+        <a id="bottom"></a>
+        <nav class="nav">
+          <a href="#top">В начало</a>
+          <a href="/index.html">Главная</a>
+          <a href="/about.html">О журнале</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>
+
