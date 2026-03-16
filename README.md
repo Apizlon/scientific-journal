@@ -11,6 +11,9 @@ docker compose up --build
 
 Откройте:
 - `http://localhost:8080/` (главная: `static/index.html`)
+- `http://localhost:8080/cgi-bin/issue.pl` (динамика CGI + SQLite)
+
+SQLite создаётся автоматически при первом заходе на CGI (файл: `./data/app.db`).
 
 ### Структура
 - `static/` — статичные страницы (`*.html`)
