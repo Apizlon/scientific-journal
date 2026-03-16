@@ -43,7 +43,6 @@ my $row = $dbh->selectrow_hashref(
 );
 
 if ($row && $row->{password_hash} eq $password) {
-    # Простейший вариант: пробрасываем пользователя через query param (как в quiz-примере)
     my $user = $row->{username};
     print start_html(
         -title    => 'Успешный вход',
@@ -54,7 +53,7 @@ if ($row && $row->{password_hash} eq $password) {
     print '<div class="container"><main class="card">';
     print h1("Добро пожаловать, $user!");
     print p( qq{Вы можете перейти к выпускам или продолжить просмотр сайта.} );
-    print p( a( { href => '/cgi-bin/issue.pl' }, 'Список выпусков (CGI)' ) );
+    print p( a( { href => '/cgi-bin/issue.pl' }, 'Архив выпусков' ) );
     print p( a( { href => '/index.html' }, 'На главную' ) );
     print '</main></div>';
     print end_html();

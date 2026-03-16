@@ -35,7 +35,7 @@ if (defined $issue_id) {
 }
 
 print start_html(
-    -title    => 'Выпуски (CGI)',
+    -title    => 'Архив выпусков',
     -lang     => 'ru',
     -encoding => 'utf-8',
     -style    => { src => '/assets/css/style.css' }
@@ -44,15 +44,15 @@ print start_html(
 print '<body class="page with-bg">';
 print '<div class="container">';
 print '<header class="site-header">';
-print h1('Выпуски (динамически из SQLite)');
+print h1('Архив выпусков');
 print '<nav class="nav">';
 print a({ href => '/index.html' }, 'Главная');
-print a({ href => '/issues.html' }, 'Выпуски (стат.)');
+print a({ href => '/issues.html' }, 'Выпуски');
 print '</nav>';
 print '</header>';
 
 print '<main class="card">';
-print p('Выберите выпуск. Данные берутся из SQLite-файла в /data/app.db (монтируется из ./data).');
+print p('Выберите выпуск, чтобы посмотреть список материалов.');
 
 print '<h2>Список выпусков</h2>';
 print '<ul>';
@@ -78,8 +78,8 @@ if (defined $issue_id) {
         }
     }
 
-    print '<button type="button" onclick="showHint()" style="margin-top: 10px;">Подсказка (JS)</button>';
-    print qq{<script>function showHint(){alert("Это динамическая страница CGI. Дальше добавим корзину и заказы.");}</script>};
+    print '<button type="button" onclick="showHint()" style="margin-top: 10px;">Подробнее</button>';
+    print qq{<script>function showHint(){alert("Для оформления заказа добавьте материалы в корзину.");}</script>};
 }
 
 print '<p class="links">' . a({ href => '/index.html' }, 'На главную') . '</p>';

@@ -13,15 +13,15 @@
         <h1>Корзина</h1>
         <nav class="nav">
           <a href="/index.html">Главная</a>
-          <a href="/cgi-bin/issue.pl">Выбрать статьи (CGI)</a>
+          <a href="/cgi-bin/issue.pl">Выбрать статьи</a>
           <a href="#bottom">В конец</a>
         </nav>
       </header>
 
       <main class="card">
         <p>
-          Пока это статическая страница-шаблон. Дальше корзина будет управляться через CGI и таблицы
-          `orders`/`order_items` в SQLite.
+          Здесь отображаются выбранные материалы. Вы можете удалить позиции из корзины и перейти к
+          оформлению заказа.
         </p>
 
         <h2 id="items">Товары</h2>
@@ -37,7 +37,7 @@
             <tr>
               <td>Пример статьи</td>
               <td>150 ₽</td>
-              <td><button type="button" onclick="removeItem()">Убрать (JS)</button></td>
+              <td><button type="button" onclick="removeItem()">Убрать</button></td>
             </tr>
           </tbody>
         </table>
@@ -50,7 +50,7 @@
 
         <script>
           function removeItem() {
-            alert("Демо: дальше это будет CGI-операция удаления из корзины.");
+            alert("Позиция будет удалена из корзины.");
           }
         </script>
 
