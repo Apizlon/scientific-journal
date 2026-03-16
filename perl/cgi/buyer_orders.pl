@@ -72,7 +72,7 @@ if (!@$orders) {
         } else {
             $html .= '<ul class="list">';
             for my $item (@$items) {
-                my $title = escapeHTML($item->{title});
+                my $title = escapeHTML(Journal::Web::clean_text($item->{title}));
                 $html .= "<li>$title</li>";
             }
             $html .= '</ul>';
@@ -81,7 +81,7 @@ if (!@$orders) {
         if ($order->{status} eq 'paid') {
             my $articles = $dbh->selectall_arrayref(
                 q{
-                    SELECT a.title, a.content, a.author_name
+                    SELECT a.title, a.abstract, a.content, a.author_name
                     FROM articles a
                     JOIN order_items oi ON oi.issue_id = a.issue_id
                     WHERE oi.order_id = ? AND a.status = 'approved'
@@ -97,12 +97,17 @@ if (!@$orders) {
             } else {
                 $html .= '<div class="article-list">';
                 for my $article (@$articles) {
-                    my $title = escapeHTML($article->{title});
-                    my $content = escapeHTML($article->{content});
-                    my $author = escapeHTML($article->{author_name});
+                    my $title = escapeHTML(Journal::Web::clean_text($article->{title}));
+                    my $abstract = escapeHTML(Journal::Web::clean_text($article->{abstract}));
+                    my $content = escapeHTML(Journal::Web::clean_text($article->{content}));
+                    my $author = escapeHTML(Journal::Web::clean_text($article->{author_name}));
                     $html .= '<div class="article-item">';
                     $html .= "<h4>$title</h4>";
-                    $html .= "<p class=\"muted\">$content</p>";
+                    $html .= "<p class=\"muted\">$abstract</p>";
+                    $html .= '<details class="article-details">';
+                    $html .= '<summary>Полный текст</summary>';
+                    $html .= "<p class=\"article-content\">$content</p>";
+                    $html .= '</details>';
                     $html .= "<span class=\"badge\">$author</span>";
                     $html .= '</div>';
                 }

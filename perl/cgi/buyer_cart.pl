@@ -74,8 +74,9 @@ if ($action eq 'checkout') {
 
         $dbh->do('DELETE FROM cart_items WHERE user_id = ?', undef, $user->{id});
 
+        my $payer = Journal::Web::clean_text($user->{first_name}) . ' ' . Journal::Web::clean_text($user->{last_name});
         my $content = "Квитанция на оплату заказа #$order_id\n";
-        $content .= "Плательщик: $user->{first_name} $user->{last_name}\n";
+        $content .= "Плательщик: $payer\n";
         $content .= "Сумма: $total ₽\n";
         $content .= "Счет получателя: 40817810000000000001\n";
         $content .= "Получатель: ООО \"Научный журнал\"\n";

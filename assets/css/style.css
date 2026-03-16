@@ -229,6 +229,36 @@ textarea {
   margin-top: 24px;
 }
 
+.scroll-btn {
+  position: fixed;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 40;
+}
+
+.scroll-btn:hover {
+  transform: translateY(-2px);
+  color: var(--accent);
+}
+
+.scroll-btn.down {
+  bottom: 20px;
+}
+
+.scroll-btn.up {
+  bottom: 64px;
+}
+
 .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -283,6 +313,25 @@ textarea {
   border-radius: 14px;
   border: 1px solid var(--border);
   background: #fbfaf8;
+}
+
+.article-content {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.article-details {
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px dashed rgba(31, 42, 55, 0.15);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.article-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .badge {

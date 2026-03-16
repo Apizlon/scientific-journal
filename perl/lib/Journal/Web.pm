@@ -7,6 +7,7 @@ use utf8;
 use CGI qw(:standard);
 use CGI::Cookie;
 use Digest::SHA qw(sha1_hex);
+use Encode qw(decode encode);
 use POSIX qw(strftime);
 
 use Journal::DB;
@@ -93,6 +94,16 @@ sub role_label {
     return 'Клиент';
 }
 
+sub clean_text {
+    my ($value) = @_;
+    return '' unless defined $value;
+    # Heuristic: fix common UTF-8 -> Latin-1 mojibake (Ð/Ñ sequences)
+    if ($value =~ /[ÐÑ][\x80-\xBF]/) {
+        return decode('UTF-8', encode('latin1', $value));
+    }
+    return $value;
+}
+
 sub nav_links {
     my ($role) = @_;
     return [
@@ -137,7 +148,9 @@ sub render_page {
     print '</div>';
     print '</div>';
     print '<div class="user-chip">';
-    print '<span>' . escapeHTML($user->{first_name}) . ' ' . escapeHTML($user->{last_name}) . '</span>';
+    my $first_name = clean_text($user->{first_name});
+    my $last_name = clean_text($user->{last_name});
+    print '<span>' . escapeHTML($first_name) . ' ' . escapeHTML($last_name) . '</span>';
     print '<em>' . $role_label . '</em>';
     print '</div>';
     print '<a class="ghost-link" href="/cgi-bin/logout.pl">Выйти</a>';
@@ -161,12 +174,20 @@ sub render_page {
     print '</button>';
     print '<a class="ghost-link" href="/cgi-bin/index.pl">Домой</a>';
     print '</footer>';
+    print '<button type="button" class="scroll-btn up" onclick="scrollToTop()" aria-label="Наверх">↑</button>';
+    print '<button type="button" class="scroll-btn down" onclick="scrollToBottom()" aria-label="Вниз">↓</button>';
 
     print '</div>';
     print qq{
 <script>
 function showHint() {
     alert("Подсказка: используйте вкладки сверху для навигации по личному кабинету.");
+}
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function scrollToBottom() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 }
 </script>
 };

@@ -11,7 +11,9 @@ use Journal::DB;
 binmode(STDIN,  ':utf8');
 binmode(STDOUT, ':utf8');
 
+$CGI::PARAM_UTF8 = 1;
 my $cgi = CGI->new;
+
 my $first_name = $cgi->param('first_name') // '';
 my $last_name  = $cgi->param('last_name')  // '';
 my $email      = $cgi->param('email')      // '';

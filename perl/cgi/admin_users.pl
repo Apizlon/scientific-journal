@@ -46,8 +46,8 @@ $html .= '<table class="data-table">';
 $html .= '<thead><tr><th>Почта</th><th>Имя</th><th>Фамилия</th><th>Роль</th></tr></thead><tbody>';
 for my $row (@$users) {
     my $email = escapeHTML($row->{email});
-    my $first_name = escapeHTML($row->{first_name});
-    my $last_name = escapeHTML($row->{last_name});
+    my $first_name = escapeHTML(Journal::Web::clean_text($row->{first_name}));
+    my $last_name = escapeHTML(Journal::Web::clean_text($row->{last_name}));
     my $role = $row->{role};
     $html .= '<tr>';
     $html .= "<td>$email</td>";

@@ -12,6 +12,7 @@ use Journal::Web;
 binmode(STDIN,  ':utf8');
 binmode(STDOUT, ':utf8');
 
+BEGIN { $CGI::PARAM_UTF8 = 1; }
 my $cgi = CGI->new;
 my $dbh = Journal::DB::connect_db();
 Journal::DB::ensure_schema($dbh);
@@ -91,8 +92,8 @@ if (!@$submissions) {
     $html .= '<table class="data-table">';
     $html .= '<thead><tr><th>Статья</th><th>Тематика</th><th>Статус</th></tr></thead><tbody>';
     for my $row (@$submissions) {
-        my $title = escapeHTML($row->{title});
-        my $theme = escapeHTML($row->{theme_name});
+        my $title = escapeHTML(Journal::Web::clean_text($row->{title}));
+        my $theme = escapeHTML(Journal::Web::clean_text($row->{theme_name}));
         my $status_label = $row->{status} eq 'approved' ? 'Утверждена' : $row->{status} eq 'rejected' ? 'Отклонена' : 'На проверке';
         $html .= "<tr><td>$title</td><td>$theme</td><td>$status_label</td></tr>";
     }

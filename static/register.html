@@ -36,5 +36,15 @@
         </div>
       </div>
     </div>
+    <button type="button" class="scroll-btn up" onclick="scrollToTop()" aria-label="Наверх">↑</button>
+    <button type="button" class="scroll-btn down" onclick="scrollToBottom()" aria-label="Вниз">↓</button>
+    <script>
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function scrollToBottom() {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }
+    </script>
   </body>
 </html>

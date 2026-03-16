@@ -76,7 +76,7 @@ $html .= '<div class="table-wrap">';
 $html .= '<table class="data-table">';
 $html .= '<thead><tr><th>Выпуск</th><th>Продажи</th><th>Выручка</th></tr></thead><tbody>';
 for my $row (@$issues_stats) {
-    my $title = escapeHTML($row->{title});
+    my $title = escapeHTML(Journal::Web::clean_text($row->{title}));
     my $count = $row->{sales_count} || 0;
     my $revenue = $row->{revenue} || 0;
     $html .= "<tr><td>$title</td><td>$count</td><td>$revenue ₽</td></tr>";
@@ -88,7 +88,7 @@ $html .= '<div class="table-wrap">';
 $html .= '<table class="data-table">';
 $html .= '<thead><tr><th>Автор</th><th>Продажи</th></tr></thead><tbody>';
 for my $row (@$author_stats) {
-    my $name = escapeHTML($row->{author_name});
+    my $name = escapeHTML(Journal::Web::clean_text($row->{author_name}));
     my $count = $row->{sales_count} || 0;
     $html .= "<tr><td>$name</td><td>$count</td></tr>";
 }
@@ -99,7 +99,7 @@ $html .= '<div class="table-wrap">';
 $html .= '<table class="data-table">';
 $html .= '<thead><tr><th>Тематика</th><th>Продажи</th></tr></thead><tbody>';
 for my $row (@$theme_stats) {
-    my $name = escapeHTML($row->{theme_name});
+    my $name = escapeHTML(Journal::Web::clean_text($row->{theme_name}));
     my $count = $row->{sales_count} || 0;
     $html .= "<tr><td>$name</td><td>$count</td></tr>";
 }

@@ -74,13 +74,13 @@ if (!@$articles) {
     $html .= '<table class="data-table">';
     $html .= '<thead><tr><th>Статья</th><th>Автор</th><th>Тематика</th><th>Статус</th><th>Выпуск</th><th>Действие</th></tr></thead><tbody>';
     for my $row (@$articles) {
-        my $title = escapeHTML($row->{title});
-        my $author = escapeHTML($row->{author_name});
-        my $theme = escapeHTML($row->{theme_name});
-        my $issue_title = $row->{issue_title} ? escapeHTML($row->{issue_title}) : '—';
+        my $title = escapeHTML(Journal::Web::clean_text($row->{title}));
+        my $author = escapeHTML(Journal::Web::clean_text($row->{author_name}));
+        my $theme = escapeHTML(Journal::Web::clean_text($row->{theme_name}));
+        my $issue_title = $row->{issue_title} ? escapeHTML(Journal::Web::clean_text($row->{issue_title})) : '—';
         my $status = $row->{status};
         $html .= '<tr>';
-        $html .= "<td><strong>$title</strong><div class=\"muted small\">" . escapeHTML($row->{abstract}) . "</div></td>";
+        $html .= "<td><strong>$title</strong><div class=\"muted small\">" . escapeHTML(Journal::Web::clean_text($row->{abstract})) . "</div></td>";
         $html .= "<td>$author</td>";
         $html .= "<td>$theme</td>";
         $html .= '<td>';

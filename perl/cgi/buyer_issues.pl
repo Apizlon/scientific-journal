@@ -93,9 +93,9 @@ if (!@$issues) {
         } else {
             $html .= '<div class="article-list">';
             for my $article (@$articles) {
-                my $a_title = escapeHTML($article->{title});
-                my $a_abstract = escapeHTML($article->{abstract});
-                my $a_author = escapeHTML($article->{author_name});
+                my $a_title = escapeHTML(Journal::Web::clean_text($article->{title}));
+                my $a_abstract = escapeHTML(Journal::Web::clean_text($article->{abstract}));
+                my $a_author = escapeHTML(Journal::Web::clean_text($article->{author_name}));
                 $html .= '<div class="article-item">';
                 $html .= "<h3>$a_title</h3>";
                 $html .= "<p class=\"muted\">$a_abstract</p>";
