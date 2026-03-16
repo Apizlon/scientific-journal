@@ -1,100 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>О журнале</title>
+    <title>Перенаправление</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      const target = document.cookie.includes("sj_session=")
+        ? "/cgi-bin/index.pl"
+        : "/login.html";
+      window.location.href = target;
+    </script>
   </head>
-  <body class="page with-bg">
-    <a id="top"></a>
-    <div class="container">
-      <header class="site-header">
-        <h1>О журнале</h1>
-        <nav class="nav">
-          <a href="/index.html">Главная</a>
-          <a href="#sections">Разделы</a>
-          <a href="#images">Список рисунков</a>
-          <a href="#bottom">В конец</a>
-        </nav>
-      </header>
-
-      <main class="card">
-        <section id="sections">
-          <h2>Разделы</h2>
-          <ul>
-            <li><a href="#editorial">Редколлегия</a></li>
-            <li><a href="#contacts">Контакты</a></li>
-            <li><a href="#pricing">Таблица цен</a></li>
-          </ul>
-        </section>
-
-        <section id="editorial">
-          <h2>Редколлегия</h2>
-          <p>
-            Журнал публикует материалы по актуальным научным направлениям. На сайте доступны выпуски,
-            сведения о редакционной коллегии, правила подачи материалов и оформление заказов.
-          </p>
-          <img id="image1" class="hero-image" src="/assets/images/editorial.svg" alt="Редколлегия" />
-        </section>
-
-        <section id="pricing">
-          <h2>Таблица цен</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Тип материала</th>
-                <th>Описание</th>
-                <th>Цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Тезисы</td>
-                <td>Краткое описание доклада</td>
-                <td>50 ₽</td>
-              </tr>
-              <tr>
-                <td>Статья</td>
-                <td>Полный текст в PDF</td>
-                <td>150 ₽</td>
-              </tr>
-              <tr>
-                <td>Выпуск</td>
-                <td>Комплект статей</td>
-                <td>500 ₽</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section id="contacts">
-          <h2>Контакты</h2>
-          <p>Для связи: editorial@example.local</p>
-          <img id="image2" class="hero-image" src="/assets/images/contact.svg" alt="Контакты" />
-        </section>
-
-        <section id="images">
-          <h2>Список рисунков</h2>
-          <ul>
-            <li><a href="#image1">Изображение 1: Редколлегия</a></li>
-            <li><a href="#image2">Изображение 2: Контакты</a></li>
-          </ul>
-        </section>
-
-        <p class="links">
-          <a href="#top">В начало</a> · <a href="/index.html">На главную</a> · <a href="#bottom">В конец</a>
-        </p>
-      </main>
-
-      <footer class="footer">
-        <a id="bottom"></a>
-        <nav class="nav">
-          <a href="#top">В начало</a>
-          <a href="/index.html">Главная</a>
-        </nav>
-      </footer>
+  <body class="page">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <h1>Перенаправляем</h1>
+        <p class="muted">Если переход не произошёл, воспользуйтесь ссылкой ниже.</p>
+        <div class="auth-links">
+          <a class="primary-link" href="/cgi-bin/index.pl">Перейти в кабинет</a>
+          <a class="ghost-link" href="/login.html">Войти</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
-

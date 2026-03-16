@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Регистрация</title>
+    <title>Регистрация • Научный журнал</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      if (document.cookie.includes("sj_session=")) {
+        window.location.href = "/cgi-bin/index.pl";
+      }
+    </script>
   </head>
-  <body class="page with-bg">
-    <div class="container">
-      <header class="site-header">
+  <body class="page">
+    <div class="auth-shell">
+      <div class="auth-card">
         <h1>Регистрация</h1>
-        <nav class="nav">
-          <a href="/index.html">Главная</a>
-          <a href="/login.html">Вход</a>
-        </nav>
-      </header>
-
-      <main class="card">
+        <p class="muted">Заполните все поля — будет создан клиентский аккаунт.</p>
         <form method="post" action="/cgi-bin/register.pl">
-          <label>
-            Логин
-            <input type="text" name="login" required />
+          <label>Имя
+            <input type="text" name="first_name" required />
           </label>
-          <label>
-            Пароль
+          <label>Фамилия
+            <input type="text" name="last_name" required />
+          </label>
+          <label>Почта
+            <input type="text" name="email" required />
+          </label>
+          <label>Пароль
             <input type="password" name="password" required />
           </label>
-          <button type="submit">Зарегистрироваться</button>
+          <button class="primary-btn" type="submit">Зарегистрироваться</button>
         </form>
-      </main>
+        <div class="auth-links">
+          <a class="ghost-link" href="/login.html">Уже есть аккаунт</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
-

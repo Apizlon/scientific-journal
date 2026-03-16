@@ -11,90 +11,78 @@ use Journal::DB;
 binmode(STDIN,  ':utf8');
 binmode(STDOUT, ':utf8');
 
-my $login    = param('login')    // '';
-my $password = param('password') // '';
-
-print header(-charset => 'utf-8');
-
-if ($login eq '' || $password eq '') {
-    print start_html(
-        -title    => 'Ошибка регистрации',
-        -lang     => 'ru',
-        -encoding => 'utf-8',
-        -style    => { src => '/assets/css/style.css' }
-    );
-    print '<div class="container"><main class="card">';
-    print h1('Ошибка регистрации');
-    print p('Заполните логин и пароль.');
-    print p( a( { href => '/register.html' }, 'Вернуться к регистрации' ) );
-    print p( a( { href => '/index.html' }, 'На главную' ) );
-    print '</main></div>';
-    print end_html();
-    exit;
-}
-
-if ( length($login) < 3 || length($password) < 3 ) {
-    print start_html(
-        -title    => 'Ошибка регистрации',
-        -lang     => 'ru',
-        -encoding => 'utf-8',
-        -style    => { src => '/assets/css/style.css' }
-    );
-    print '<div class="container"><main class="card">';
-    print h1('Ошибка регистрации');
-    print p('Логин и пароль должны быть не короче 3 символов.');
-    print p( a( { href => '/register.html' }, 'Вернуться к регистрации' ) );
-    print p( a( { href => '/index.html' }, 'На главную' ) );
-    print '</main></div>';
-    print end_html();
-    exit;
-}
+my $cgi = CGI->new;
+my $first_name = $cgi->param('first_name') // '';
+my $last_name  = $cgi->param('last_name')  // '';
+my $email      = $cgi->param('email')      // '';
+my $password   = $cgi->param('password')   // '';
 
 my $dbh = Journal::DB::connect_db();
 Journal::DB::ensure_schema($dbh);
+Journal::DB::seed_if_empty($dbh);
 
-my ($exists) = $dbh->selectrow_array(
-    'SELECT COUNT(*) FROM users WHERE username = ?',
-    undef,
-    $login
-);
-
-if ( ($exists || 0) > 0 ) {
+sub render_error {
+    my ($title, $message) = @_;
+    print header(-charset => 'utf-8');
     print start_html(
-        -title    => 'Ошибка регистрации',
+        -title    => $title,
         -lang     => 'ru',
         -encoding => 'utf-8',
         -style    => { src => '/assets/css/style.css' }
     );
-    print '<div class="container"><main class="card">';
-    print h1("Пользователь '$login' уже существует");
-    print p('Выберите другой логин.');
-    print p( a( { href => '/register.html' }, 'Вернуться к регистрации' ) );
-    print p( a( { href => '/index.html' }, 'На главную' ) );
-    print '</main></div>';
+    print '<div class="auth-shell">';
+    print '<div class="auth-card">';
+    print "<h1>$title</h1>";
+    print "<p>$message</p>";
+    print '<div class="auth-links">';
+    print '<a class="primary-link" href="/register.html">Вернуться к регистрации</a>';
+    print '<a class="ghost-link" href="/login.html">Войти</a>';
+    print '</div>';
+    print '</div>';
+    print '</div>';
     print end_html();
     exit;
 }
 
-# Простейший вариант: храним пароль как есть (аналогично эталонной работе).
-$dbh->do(
-    'INSERT INTO users(username, password_hash, role) VALUES (?,?,?)',
+if ($first_name eq '' || $last_name eq '' || $email eq '' || $password eq '') {
+    render_error('Ошибка регистрации', 'Все поля обязательны.');
+}
+
+my ($exists) = $dbh->selectrow_array(
+    'SELECT COUNT(*) FROM users WHERE email = ?',
     undef,
-    $login,
-    $password,
-    'buyer'
+    $email
 );
 
+if (($exists || 0) > 0) {
+    render_error('Пользователь уже существует', 'Укажите другую почту.');
+}
+
+$dbh->do(
+    'INSERT INTO users(email,password_hash,first_name,last_name,role,created_at) VALUES (?,?,?,?,?,?)',
+    undef,
+    $email,
+    $password,
+    $first_name,
+    $last_name,
+    'buyer',
+    Journal::DB::now_ts()
+);
+
+print header(-charset => 'utf-8');
 print start_html(
     -title    => 'Регистрация выполнена',
     -lang     => 'ru',
     -encoding => 'utf-8',
     -style    => { src => '/assets/css/style.css' }
 );
-print '<div class="container"><main class="card">';
-print h1("Пользователь '$login' зарегистрирован");
-print p( a( { href => '/login.html' }, 'Перейти ко входу' ) );
-print p( a( { href => '/index.html' }, 'На главную' ) );
-print '</main></div>';
+print '<div class="auth-shell">';
+print '<div class="auth-card">';
+print '<h1>Регистрация выполнена</h1>';
+print '<p>Теперь вы можете войти в систему.</p>';
+print '<div class="auth-links">';
+print '<a class="primary-link" href="/login.html">Перейти ко входу</a>';
+print '</div>';
+print '</div>';
+print '</div>';
 print end_html();
-

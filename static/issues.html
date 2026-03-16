@@ -1,48 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Выпуски</title>
+    <title>Перенаправление</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      const target = document.cookie.includes("sj_session=")
+        ? "/cgi-bin/index.pl"
+        : "/login.html";
+      window.location.href = target;
+    </script>
   </head>
-  <body class="page with-bg">
-    <a id="top"></a>
-    <div class="container">
-      <header class="site-header">
-        <h1>Выпуски</h1>
-        <nav class="nav">
-          <a href="/index.html">Главная</a>
-          <a href="/about.html">О журнале</a>
-          <a href="/cgi-bin/issue.pl">Открыть архив выпусков</a>
-          <a href="#bottom">В конец</a>
-        </nav>
-      </header>
-
-      <main class="card">
-        <p>
-          На этой странице размещён быстрый переход в архив. Полный список выпусков и статей доступен
-          в разделе архива.
-        </p>
-
-        <h2>Пример (заглушка)</h2>
-        <ul>
-          <li>Выпуск №1 (2026) — <a href="/cgi-bin/issue.pl?issue=1">открыть</a></li>
-        </ul>
-
-        <p class="links">
-          <a href="#top">В начало</a> · <a href="/index.html">На главную</a> · <a href="#bottom">В конец</a>
-        </p>
-      </main>
-
-      <footer class="footer">
-        <a id="bottom"></a>
-        <nav class="nav">
-          <a href="#top">В начало</a>
-          <a href="/index.html">Главная</a>
-        </nav>
-      </footer>
+  <body class="page">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <h1>Перенаправляем</h1>
+        <p class="muted">Если переход не произошёл, воспользуйтесь ссылкой ниже.</p>
+        <div class="auth-links">
+          <a class="primary-link" href="/cgi-bin/index.pl">Перейти в кабинет</a>
+          <a class="ghost-link" href="/login.html">Войти</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
-

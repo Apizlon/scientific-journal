@@ -1,72 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Корзина</title>
+    <title>Перенаправление</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      const target = document.cookie.includes("sj_session=")
+        ? "/cgi-bin/index.pl"
+        : "/login.html";
+      window.location.href = target;
+    </script>
   </head>
-  <body class="page with-bg">
-    <a id="top"></a>
-    <div class="container">
-      <header class="site-header">
-        <h1>Корзина</h1>
-        <nav class="nav">
-          <a href="/index.html">Главная</a>
-          <a href="/cgi-bin/issue.pl">Выбрать статьи</a>
-          <a href="#bottom">В конец</a>
-        </nav>
-      </header>
-
-      <main class="card">
-        <p>
-          Здесь отображаются выбранные материалы. Вы можете удалить позиции из корзины и перейти к
-          оформлению заказа.
-        </p>
-
-        <h2 id="items">Товары</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Статья</th>
-              <th>Цена</th>
-              <th>Действие</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Пример статьи</td>
-              <td>150 ₽</td>
-              <td><button type="button" onclick="removeItem()">Убрать</button></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p><strong>Итого:</strong> 150 ₽</p>
-
-        <form method="post" action="/cgi-bin/checkout.pl">
-          <button type="submit">Оформить заказ</button>
-        </form>
-
-        <script>
-          function removeItem() {
-            alert("Позиция будет удалена из корзины.");
-          }
-        </script>
-
-        <p class="links">
-          <a href="#top">В начало</a> · <a href="/index.html">На главную</a> · <a href="#bottom">В конец</a>
-        </p>
-      </main>
-
-      <footer class="footer">
-        <a id="bottom"></a>
-        <nav class="nav">
-          <a href="#top">В начало</a>
-          <a href="/index.html">Главная</a>
-        </nav>
-      </footer>
+  <body class="page">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <h1>Перенаправляем</h1>
+        <p class="muted">Если переход не произошёл, воспользуйтесь ссылкой ниже.</p>
+        <div class="auth-links">
+          <a class="primary-link" href="/cgi-bin/index.pl">Перейти в кабинет</a>
+          <a class="ghost-link" href="/login.html">Войти</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
-

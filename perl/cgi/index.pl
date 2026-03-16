@@ -18,4 +18,15 @@ Journal::DB::ensure_schema($dbh);
 Journal::DB::seed_if_empty($dbh);
 
 my $user = Journal::Web::require_login($cgi, $dbh);
-print redirect('/cgi-bin/index.pl');
+
+if ($user->{role} eq 'admin') {
+    print redirect('/cgi-bin/admin_orders.pl');
+    exit;
+}
+
+if ($user->{role} eq 'editor') {
+    print redirect('/cgi-bin/editor_articles.pl');
+    exit;
+}
+
+print redirect('/cgi-bin/buyer_issues.pl');

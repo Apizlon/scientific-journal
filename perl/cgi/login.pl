@@ -7,70 +7,57 @@ use CGI qw(:standard);
 use lib "/opt/app/lib";
 
 use Journal::DB;
+use Journal::Web;
 
 binmode(STDIN,  ':utf8');
 binmode(STDOUT, ':utf8');
 
-my $login    = param('login')    // '';
-my $password = param('password') // '';
+my $cgi = CGI->new;
+my $email    = $cgi->param('email')    // '';
+my $password = $cgi->param('password') // '';
 
-print header(-charset => 'utf-8');
+my $dbh = Journal::DB::connect_db();
+Journal::DB::ensure_schema($dbh);
+Journal::DB::seed_if_empty($dbh);
 
-if ($login eq '' || $password eq '') {
+sub render_error {
+    my ($title, $message) = @_;
+    print header(-charset => 'utf-8');
     print start_html(
-        -title    => 'Ошибка входа',
+        -title    => $title,
         -lang     => 'ru',
         -encoding => 'utf-8',
         -style    => { src => '/assets/css/style.css' }
     );
-    print '<div class="container"><main class="card">';
-    print h1('Ошибка входа');
-    print p('Заполните логин и пароль.');
-    print p( a( { href => '/login.html' }, 'Вернуться ко входу' ) );
-    print p( a( { href => '/index.html' }, 'На главную' ) );
-    print '</main></div>';
+    print '<div class="auth-shell">';
+    print '<div class="auth-card">';
+    print "<h1>$title</h1>";
+    print "<p>$message</p>";
+    print '<div class="auth-links">';
+    print '<a class="primary-link" href="/login.html">Вернуться ко входу</a>';
+    print '<a class="ghost-link" href="/register.html">Регистрация</a>';
+    print '</div>';
+    print '</div>';
+    print '</div>';
     print end_html();
     exit;
 }
 
-my $dbh = Journal::DB::connect_db();
-Journal::DB::ensure_schema($dbh);
+if ($email eq '' || $password eq '') {
+    render_error('Ошибка входа', 'Заполните почту и пароль.');
+}
 
 my $row = $dbh->selectrow_hashref(
-    'SELECT id, username, password_hash, role FROM users WHERE username = ?',
+    'SELECT id, email, password_hash, first_name, last_name, role FROM users WHERE email = ?',
     undef,
-    $login
+    $email
 );
 
-if ($row && $row->{password_hash} eq $password) {
-    my $user = $row->{username};
-    print start_html(
-        -title    => 'Успешный вход',
-        -lang     => 'ru',
-        -encoding => 'utf-8',
-        -style    => { src => '/assets/css/style.css' }
-    );
-    print '<div class="container"><main class="card">';
-    print h1("Добро пожаловать, $user!");
-    print p( qq{Вы можете перейти к выпускам или продолжить просмотр сайта.} );
-    print p( a( { href => '/cgi-bin/issue.pl' }, 'Архив выпусков' ) );
-    print p( a( { href => '/index.html' }, 'На главную' ) );
-    print '</main></div>';
-    print end_html();
-}
-else {
-    print start_html(
-        -title    => 'Неверный логин или пароль',
-        -lang     => 'ru',
-        -encoding => 'utf-8',
-        -style    => { src => '/assets/css/style.css' }
-    );
-    print '<div class="container"><main class="card">';
-    print h1('Неверный логин или пароль');
-    print p('Проверьте данные или зарегистрируйтесь.');
-    print p( a( { href => '/login.html' }, 'Вернуться ко входу' ) );
-    print p( a( { href => '/register.html' }, 'Регистрация' ) );
-    print '</main></div>';
-    print end_html();
+if (!$row || $row->{password_hash} ne $password) {
+    render_error('Неверный логин или пароль', 'Проверьте данные или зарегистрируйтесь.');
 }
 
+my ($token) = Journal::Web::create_session($dbh, $row->{id});
+my $cookie = Journal::Web::session_cookie($token);
+
+print redirect(-uri => '/cgi-bin/index.pl', -cookie => $cookie);

@@ -1,69 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Подача тезисов/статьи</title>
+    <title>Перенаправление</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <script>
+      const target = document.cookie.includes("sj_session=")
+        ? "/cgi-bin/index.pl"
+        : "/login.html";
+      window.location.href = target;
+    </script>
   </head>
-  <body class="page with-bg">
-    <a id="top"></a>
-    <div class="container">
-      <header class="site-header">
-        <h1>Подача тезисов/статьи</h1>
-        <nav class="nav">
-          <a href="/index.html">Главная</a>
-          <a href="#rules">Требования</a>
-          <a href="#form">Форма</a>
-          <a href="#bottom">В конец</a>
-        </nav>
-      </header>
-
-      <main class="card">
-        <section id="rules">
-          <h2>Требования</h2>
-          <ul>
-            <li>Язык: русский/английский</li>
-            <li>Объём: 2–10 страниц</li>
-            <li>Формат: PDF</li>
-          </ul>
-          <p>
-            Заполните форму, чтобы отправить материал в редакцию на рассмотрение.
-          </p>
-        </section>
-
-        <section id="form">
-          <h2>Форма</h2>
-          <form method="post" action="/cgi-bin/submit.pl">
-            <label>
-              Заголовок
-              <input type="text" name="title" required />
-            </label>
-            <label>
-              Аннотация (тезисы)
-              <input type="text" name="abstract" required />
-            </label>
-            <label>
-              Тематика
-              <input type="text" name="theme" placeholder="например, Информатика" />
-            </label>
-            <button type="submit">Отправить</button>
-          </form>
-
-          <p class="links">
-            <a href="#top">В начало</a> · <a href="/index.html">На главную</a> · <a href="#bottom">В конец</a>
-          </p>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <a id="bottom"></a>
-        <nav class="nav">
-          <a href="#top">В начало</a>
-          <a href="/index.html">Главная</a>
-        </nav>
-      </footer>
+  <body class="page">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <h1>Перенаправляем</h1>
+        <p class="muted">Если переход не произошёл, воспользуйтесь ссылкой ниже.</p>
+        <div class="auth-links">
+          <a class="primary-link" href="/cgi-bin/index.pl">Перейти в кабинет</a>
+          <a class="ghost-link" href="/login.html">Войти</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
-
