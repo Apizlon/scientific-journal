@@ -1,0 +1,81 @@
+---
+title: Сайт научного журнала
+---
+erDiagram
+    USERS ||--o{ SESSIONS : "имеет"
+    USERS ||--o{ ORDERS : "оформляет"
+    USERS ||--o{ CART_ITEMS : "добавляет"
+    USERS ||--o{ ARTICLES : "подает"
+    ISSUES ||--o{ ARTICLES : "содержит"
+    THEMES ||--o{ ARTICLES : "относится"
+    ORDERS ||--o{ ORDER_ITEMS : "включает"
+    ISSUES ||--o{ ORDER_ITEMS : "продается"
+    ISSUES ||--o{ CART_ITEMS : "в корзине"
+
+    USERS {
+        int id PK
+        string email UK
+        string password_hash
+        string first_name
+        string last_name
+        string role
+        datetime created_at
+    }
+
+    SESSIONS {
+        int id PK
+        int user_id FK
+        string token UK
+        datetime created_at
+        datetime expires_at
+    }
+
+    ISSUES {
+        int id PK
+        int number
+        int year
+        string title
+        string status
+        int price
+        datetime published_at
+    }
+
+    THEMES {
+        int id PK
+        string name UK
+    }
+
+    ARTICLES {
+        int id PK
+        int issue_id FK
+        int theme_id FK
+        int created_by_user_id FK
+        string title
+        string abstract
+        string content
+        string author_name
+        string status
+        datetime created_at
+    }
+
+    ORDERS {
+        int id PK
+        int user_id FK
+        string status
+        int total_amount
+        datetime created_at
+    }
+
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int issue_id FK
+        int price
+    }
+
+    CART_ITEMS {
+        int id PK
+        int user_id FK
+        int issue_id FK
+        datetime created_at
+    }
