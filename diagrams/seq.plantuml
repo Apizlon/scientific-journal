@@ -1,0 +1,26 @@
+@startuml
+title 2.2 Диаграмма последовательности — оформление заказа (checkout)
+
+actor Buyer as "Покупатель"
+participant UI as "Web UI"
+participant CGI as "buyer_cart.pl (CGI)"
+participant DB as "SQLite (DBI)"
+
+Buyer -> UI : Нажать "Оформить заказ"
+UI -> CGI : POST /cgi-bin/buyer_cart.pl\naction=checkout + cookie
+CGI -> DB : SELECT cart_items + issues\nпо user_id
+DB --> CGI : Список выпусков + цены
+alt корзина пуста
+  CGI --> UI : HTML (сообщение "Корзина пуста")
+else корзина не пуста
+  CGI -> DB : INSERT orders(status=pending,total_amount)
+  DB --> CGI : order_id
+  loop по каждому выпуску
+    CGI -> DB : INSERT order_items(order_id, issue_id, price)
+    DB --> CGI : OK
+  end
+  CGI -> DB : DELETE cart_items WHERE user_id=...
+  DB --> CGI : OK
+  CGI --> UI : 200 + attachment\nreceipt-order-<id>.txt
+end
+@enduml

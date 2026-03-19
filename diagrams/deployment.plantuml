@@ -1,0 +1,31 @@
+@startuml
+title Диаграмма развёртывания — "Сайт научного журнала"
+
+skinparam shadowing false
+
+node "Хостовая ОС\n(Windows / Linux)" as Host {
+  artifact "Файлы проекта\n(static/, assets/, perl/)" as Project
+  folder "Каталог данных\n(data/ -> app.db)" as DataDir
+
+  node "Docker Engine" as Docker {
+    node "Контейнер: scientific-journal-web" as Container {
+      node "Apache HTTPD + mod_cgi" as Apache
+      node "Perl-среда\n(CGI + модули)" as Perl
+      artifact "Каталог статики\n/usr/local/apache2/htdocs" as Htdocs
+      artifact "Каталог CGI\n/usr/local/apache2/cgi-bin" as CgiBin
+      artifact "Perl-библиотека\n/opt/app/lib" as PerlLib
+      folder "Том данных\n/data" as DataMount
+    }
+  }
+}
+
+node "Браузер пользователя" as Browser
+
+Browser --> Host : "HTTP (localhost:8080)"
+Project --> Container : "Сборка образа\nи копирование файлов"
+DataDir --> DataMount : "Монтирование тома\n./data -> /data"
+Apache --> Htdocs : "Отдача статики"
+Apache --> Perl : "Запуск CGI"
+Perl --> DataMount : "Чтение/запись app.db"
+
+@enduml

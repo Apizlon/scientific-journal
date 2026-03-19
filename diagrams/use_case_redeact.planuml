@@ -1,0 +1,40 @@
+@startuml
+title Варианты использования — Редколлегия (редактор)
+
+left to right direction
+actor "Редколлегия" as Editor
+
+rectangle "Сайт научного журнала" {
+  usecase "Войти" as UC_Login
+  usecase "Выйти" as UC_Logout
+
+  usecase "Просмотреть список статей" as UC_ListArticles
+  usecase "Просмотреть карточку статьи\n(тезисы/текст/тематика)" as UC_ViewArticle
+
+  usecase "Проверить статью" as UC_Review
+  usecase "Утвердить статью" as UC_Approve
+  usecase "Отклонить статью" as UC_Reject
+
+  usecase "Назначить утвержденную статью\nв формируемый выпуск" as UC_AssignToIssue
+
+  usecase "Просмотреть выпуски" as UC_ListIssues
+  usecase "Создать новый выпуск\n(«Формируется»)" as UC_CreateIssue
+  usecase "Выпустить выпуск\n(«Выпущен»)" as UC_PublishIssue
+}
+
+Editor --> UC_Login
+Editor --> UC_Logout
+
+Editor --> UC_ListArticles
+Editor --> UC_ViewArticle
+Editor --> UC_Review
+UC_Review .> UC_Approve : <<extend>>
+UC_Review .> UC_Reject : <<extend>>
+
+Editor --> UC_AssignToIssue
+
+Editor --> UC_ListIssues
+Editor --> UC_CreateIssue
+Editor --> UC_PublishIssue
+
+@enduml

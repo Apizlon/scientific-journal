@@ -40,3 +40,7 @@ SQLite подключается через DBI (DSN dbi:SQLite:dbname=/data/app.
 - $dbh->selectrow_array(...) — получить одну строку (скаляр/массив).
 - $dbh->selectrow_hashref(...) — получить одну строку как хеш.
 - $dbh->selectall_arrayref(...) — получить множество строк как массив хешей.
+
+### Диаграммы
+Можно локально запустить сервер PlantUML в докере
+docker run --rm -d --name plantuml -p 8081:8080 plantuml/plantuml-server:jetty

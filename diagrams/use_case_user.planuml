@@ -1,0 +1,49 @@
+@startuml
+title Варианты использования — Клиент (покупатель)
+
+left to right direction
+actor "Клиент" as Buyer
+
+rectangle "Сайт научного журнала" {
+  usecase "Войти" as UC_Login
+  usecase "Зарегистрироваться" as UC_Register
+  usecase "Выйти" as UC_Logout
+
+  usecase "Просмотреть выпуски\n(только «Выпущен»)" as UC_ViewIssues
+  usecase "Просмотреть статьи выпуска\n(заголовки + тезисы)" as UC_ViewIssueArticles
+
+  usecase "Добавить выпуск в корзину" as UC_AddToCart
+  usecase "Просмотреть корзину" as UC_ViewCart
+  usecase "Удалить выпуск из корзины" as UC_RemoveFromCart
+
+  usecase "Оформить заказ" as UC_Checkout
+  usecase "Сформировать квитанцию\nна оплату" as UC_Receipt
+
+  usecase "Просмотреть свои заказы\nи статусы" as UC_ViewOrders
+  usecase "Читать полный текст статей\nв оплаченном заказе" as UC_ReadFullText
+
+  usecase "Подать статью на проверку\n(заявка)" as UC_SubmitArticle
+  usecase "Просмотреть свои заявки\nи статусы" as UC_ViewSubmissions
+}
+
+Buyer --> UC_Login
+Buyer --> UC_Register
+Buyer --> UC_Logout
+
+Buyer --> UC_ViewIssues
+Buyer --> UC_ViewIssueArticles
+
+Buyer --> UC_AddToCart
+Buyer --> UC_ViewCart
+Buyer --> UC_RemoveFromCart
+
+Buyer --> UC_Checkout
+UC_Checkout .> UC_Receipt : <<include>>
+
+Buyer --> UC_ViewOrders
+UC_ReadFullText .> UC_ViewOrders : <<extend>>\n[заказ «Оплачен»]
+
+Buyer --> UC_SubmitArticle
+Buyer --> UC_ViewSubmissions
+
+@enduml

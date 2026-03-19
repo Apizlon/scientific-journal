@@ -1,0 +1,34 @@
+@startuml
+title Диаграмма компонентов — "Сайт научного журнала"
+
+skinparam componentStyle rectangle
+left to right direction
+
+package "Браузер (клиент)" {
+  [Статические страницы\nHTML/CSS] as Static
+  [Cookie сессии sj_session] as Cookie
+}
+
+package "Apache HTTPD" {
+  [Отдача статики\n(/, /assets/...)] as HttpStatic
+  [Среда CGI\n(mod_cgi)] as CgiRuntime
+}
+
+package "Слой Perl (CGI)" {
+  [CGI-скрипты\n(perl/cgi/*.pl)] as CgiScripts
+  [Journal::Web\n(сессии, шаблон, навигация)] as WebLib
+  [Journal::DB\n(БД, схема, тестовые данные)] as DbLib
+}
+
+database "SQLite (DB-файл)\n/data/app.db" as SQLite
+
+Static --> HttpStatic : "Запрос HTML/CSS"
+Cookie --> CgiScripts : "Передается в запросах"
+
+HttpStatic --> Static : "Возврат статики"
+CgiRuntime --> CgiScripts : "Выполнение CGI"
+CgiScripts --> WebLib : "Авторизация, шаблон"
+CgiScripts --> DbLib : "Запросы, схема, сиды"
+DbLib --> SQLite : "DBI + SQL"
+
+@enduml

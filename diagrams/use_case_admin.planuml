@@ -1,0 +1,31 @@
+@startuml
+title Варианты использования — Администратор (менеджер)
+
+left to right direction
+actor "Администратор" as Admin
+
+rectangle "Сайт научного журнала" {
+  usecase "Войти" as UC_Login
+  usecase "Выйти" as UC_Logout
+
+  usecase "Просмотреть пользователей" as UC_ListUsers
+  usecase "Изменить роль пользователя" as UC_SetRole
+
+  usecase "Просмотреть все заказы" as UC_ListOrders
+  usecase "Изменить статус заказа\n(«Ожидает оплаты»/«Оплачен»)" as UC_SetOrderStatus
+
+  usecase "Просмотреть аналитику продаж\nпо выпускам/авторам/тематикам" as UC_Analytics
+}
+
+Admin --> UC_Login
+Admin --> UC_Logout
+
+Admin --> UC_ListUsers
+Admin --> UC_SetRole
+
+Admin --> UC_ListOrders
+Admin --> UC_SetOrderStatus
+
+Admin --> UC_Analytics
+
+@enduml

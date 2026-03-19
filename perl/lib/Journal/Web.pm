@@ -83,7 +83,8 @@ sub require_login {
     my $user = current_user($cgi, $dbh);
     return $user if $user;
 
-    print redirect('/login.html');
+    my $clear = clear_cookie();
+    print redirect(-uri => '/login.html', -cookie => $clear);
     exit;
 }
 

@@ -1,0 +1,92 @@
+@startuml
+title 2.1 Проектирование структур данных (ERD)
+
+hide circle
+skinparam linetype ortho
+
+entity "users" as users {
+  * id : INTEGER <<PK>>
+  --
+  * email : TEXT <<UNIQUE>>
+  * password_hash : TEXT
+  * first_name : TEXT
+  * last_name : TEXT
+  * role : TEXT
+  * created_at : TEXT
+}
+
+entity "sessions" as sessions {
+  * id : INTEGER <<PK>>
+  --
+  * user_id : INTEGER <<FK>>
+  * token : TEXT <<UNIQUE>>
+  * created_at : TEXT
+  * expires_at : TEXT
+}
+
+entity "issues" as issues {
+  * id : INTEGER <<PK>>
+  --
+  * number : INTEGER
+  * year : INTEGER
+  * title : TEXT
+  * status : TEXT
+  * price : INTEGER
+  published_at : TEXT
+}
+
+entity "themes" as themes {
+  * id : INTEGER <<PK>>
+  --
+  * name : TEXT <<UNIQUE>>
+}
+
+entity "articles" as articles {
+  * id : INTEGER <<PK>>
+  --
+  issue_id : INTEGER <<FK>>
+  * theme_id : INTEGER <<FK>>
+  created_by_user_id : INTEGER <<FK>>
+  * title : TEXT
+  * abstract : TEXT
+  * content : TEXT
+  * author_name : TEXT
+  * status : TEXT
+  * created_at : TEXT
+}
+
+entity "orders" as orders {
+  * id : INTEGER <<PK>>
+  --
+  * user_id : INTEGER <<FK>>
+  * status : TEXT
+  * total_amount : INTEGER
+  * created_at : TEXT
+}
+
+entity "order_items" as order_items {
+  * id : INTEGER <<PK>>
+  --
+  * order_id : INTEGER <<FK>>
+  * issue_id : INTEGER <<FK>>
+  * price : INTEGER
+}
+
+entity "cart_items" as cart_items {
+  * id : INTEGER <<PK>>
+  --
+  * user_id : INTEGER <<FK>>
+  * issue_id : INTEGER <<FK>>
+  * created_at : TEXT
+}
+
+users ||--o{ sessions : "1:N"
+users ||--o{ orders : "1:N"
+orders ||--o{ order_items : "1:N"
+issues ||--o{ order_items : "1:N"
+users ||--o{ cart_items : "1:N"
+issues ||--o{ cart_items : "1:N"
+issues ||--o{ articles : "1:N"
+themes ||--o{ articles : "1:N"
+users ||--o{ articles : "1:N"
+@enduml

@@ -1,0 +1,84 @@
+@startuml
+title Диаграмма компонентов (по файлам) — "Сайт научного журнала"
+
+skinparam componentStyle rectangle
+left to right direction
+
+package "Статические файлы" {
+  [static/index.html\n(главная)] as f_index
+  [static/login.html\n(вход)] as f_login_html
+  [static/register.html\n(регистрация)] as f_register_html
+  [assets/css/style.css\n(стили)] as f_css
+}
+
+package "CGI-скрипты (Perl)" {
+  [perl/cgi/index.pl\n(маршрутизация по ролям)] as c_index
+  [perl/cgi/login.pl\n(вход)] as c_login
+  [perl/cgi/register.pl\n(регистрация)] as c_register
+  [perl/cgi/logout.pl\n(выход)] as c_logout
+
+  [perl/cgi/admin_orders.pl\n(заказы админа)] as c_admin_orders
+  [perl/cgi/admin_users.pl\n(пользователи админа)] as c_admin_users
+  [perl/cgi/admin_analytics.pl\n(аналитика)] as c_admin_analytics
+
+  [perl/cgi/editor_articles.pl\n(статьи редакции)] as c_editor_articles
+  [perl/cgi/editor_issues.pl\n(выпуски редакции)] as c_editor_issues
+
+  [perl/cgi/buyer_issues.pl\n(выпуски клиента)] as c_buyer_issues
+  [perl/cgi/buyer_cart.pl\n(корзина + квитанция)] as c_buyer_cart
+  [perl/cgi/buyer_orders.pl\n(заказы клиента)] as c_buyer_orders
+  [perl/cgi/buyer_submissions.pl\n(заявки на статьи)] as c_buyer_submissions
+}
+
+package "Общие модули (Perl)" {
+  [perl/lib/Journal/DB.pm\n(SQLite: схема, сиды, запросы)] as m_db
+  [perl/lib/Journal/Web.pm\n(сессии, шаблон, навигация)] as m_web
+}
+
+database "SQLite DB-файл\n/data/app.db" as db
+
+' Статика
+f_index --> f_css : "подключение стилей"
+f_login_html --> f_css : "подключение стилей"
+f_register_html --> f_css : "подключение стилей"
+
+' Переходы в CGI
+f_index --> c_index : "переход в кабинет\n(если есть сессия)"
+f_login_html --> c_login : "POST вход"
+f_register_html --> c_register : "POST регистрация"
+
+' Навигация и сессии
+c_index --> m_web : "проверка сессии"
+c_login --> m_web : "создание сессии"
+c_logout --> m_web : "очистка cookie"
+
+' Все CGI используют общий доступ к БД и шаблон
+c_login --> m_db
+c_register --> m_db
+c_logout --> m_db
+c_index --> m_db
+
+c_admin_orders --> m_db
+c_admin_users --> m_db
+c_admin_analytics --> m_db
+c_editor_articles --> m_db
+c_editor_issues --> m_db
+c_buyer_issues --> m_db
+c_buyer_cart --> m_db
+c_buyer_orders --> m_db
+c_buyer_submissions --> m_db
+
+c_admin_orders --> m_web : "рендер страницы"
+c_admin_users --> m_web : "рендер страницы"
+c_admin_analytics --> m_web : "рендер страницы"
+c_editor_articles --> m_web : "рендер страницы"
+c_editor_issues --> m_web : "рендер страницы"
+c_buyer_issues --> m_web : "рендер страницы"
+c_buyer_cart --> m_web : "рендер страницы"
+c_buyer_orders --> m_web : "рендер страницы"
+c_buyer_submissions --> m_web : "рендер страницы"
+
+' DB-модуль работает с DB-файлом
+m_db --> db : "DBI + SQL"
+
+@enduml
