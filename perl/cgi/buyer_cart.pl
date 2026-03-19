@@ -119,7 +119,7 @@ if (!@$items) {
     $html .= '<table class="data-table">';
     $html .= '<thead><tr><th>Выпуск</th><th>Цена</th><th>Действие</th></tr></thead><tbody>';
     for my $item (@$items) {
-        my $title = escapeHTML($item->{title});
+        my $title = escapeHTML(Journal::Web::clean_text($item->{title}));
         $html .= '<tr>';
         $html .= "<td>$title</td>";
         $html .= '<td>' . int($item->{price}) . ' ₽</td>';

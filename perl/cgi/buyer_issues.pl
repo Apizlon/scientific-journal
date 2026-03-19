@@ -76,7 +76,7 @@ if (!@$issues) {
 } else {
     for my $issue (@$issues) {
         my $label = '№' . $issue->{number} . ' (' . $issue->{year} . ')';
-        my $title = escapeHTML($issue->{title});
+        my $title = escapeHTML(Journal::Web::clean_text($issue->{title}));
         my $articles = $articles_by_issue->{ $issue->{id} } || [];
         $html .= '<div class="issue-card">';
         $html .= "<div class=\"issue-header\"><div><h2>$label</h2><div class=\"muted\">$title</div></div>";

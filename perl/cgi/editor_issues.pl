@@ -12,6 +12,7 @@ use Journal::Web;
 binmode(STDIN,  ':utf8');
 binmode(STDOUT, ':utf8');
 
+BEGIN { $CGI::PARAM_UTF8 = 1; }
 my $cgi = CGI->new;
 my $dbh = Journal::DB::connect_db();
 Journal::DB::ensure_schema($dbh);
@@ -92,7 +93,7 @@ if (!@$issues) {
     $html .= '<thead><tr><th>Выпуск</th><th>Статус</th><th>Статей</th><th>Цена</th><th>Действие</th></tr></thead><tbody>';
     for my $row (@$issues) {
         my $label = '№' . $row->{number} . ' (' . $row->{year} . ')';
-        my $title = escapeHTML($row->{title});
+        my $title = escapeHTML(Journal::Web::clean_text($row->{title}));
         my $status_label = $row->{status} eq 'published' ? 'Выпущен' : 'Формируется';
         $html .= '<tr>';
         $html .= "<td><strong>$label</strong><div class=\"muted small\">$title</div></td>";
